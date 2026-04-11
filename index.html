@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aviation Map Viewer</title>
+    
+    <link rel="icon" type="image/png" href="fav/favicon-32x32.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="fav/apple-touch-icon.png">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <div class="app-ui">
+        <div class="search-bar">
+            <input type="text" placeholder="Zoek vliegveld of frequentie...">
+        </div>
+        <div class="bottom-nav">
+            <button class="nav-item active">🗺️ Kaart</button>
+            <button class="nav-item">📡 Frequenties</button>
+            <button class="nav-item">⚙️ Instellingen</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="asset/script.js"></script>
+</body>
+</html>
