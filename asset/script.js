@@ -1,21 +1,14 @@
-// Initialiseer de kaart op Nederland (coördinaten van je screenshot)
+// Initialiseer de kaart
 const map = L.map('map', {
-    zoomControl: false // Verberg standaard knoppen voor cleaner app-uiterlijk
-}).setView([52.07, 4.3], 10);
+    zoomControl: false
+}).setView([52.10, 4.5], 9); // Gecentreerd op regio Den Haag/Rotterdam
 
-// OpenFlightMaps Tile Layer
-// Let op: vervang 'latest' door de actuele AIRAC cyclus indien nodig
-const ofmLayer = L.tileLayer('https://{s}.tile.p-p-h.org/openflightmaps/latest/topo/int/{z}/{x}/{y}.png', {
+// Betrouwbaardere OpenFlightMaps Layer
+const ofmLayer = L.tileLayer('https://{s}.tile.p-p-h.org/openflightmaps/2604/topo/int/{z}/{x}/{y}.png', {
     maxZoom: 14,
-    attribution: '&copy; <a href="https://www.openflightmaps.org">openflightmaps.org</a>',
-    subdomains: ['a', 'b', 'c']
+    subdomains: ['a', 'b', 'c'],
+    attribution: '&copy; <a href="https://www.openflightmaps.org">OFM</a>'
 }).addTo(map);
 
-// Voorbeeld marker voor een vliegveld (bijv. Rotterdam The Hague)
-const rtmIcon = L.icon({
-    iconUrl: 'img/airport-icon.png', // Zorg dat je een icoon in je img map hebt
-    iconSize: [32, 32],
-});
-
-L.marker([51.9569, 4.4372]).addTo(map)
-    .bindPopup('<b>Rotterdam The Hague Airport</b><br>TWR: 118.205<br>GND: 121.705');
+// Voeg een backup laag toe voor als OFM offline is (optioneel)
+const baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
