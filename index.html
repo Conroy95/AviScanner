@@ -3,19 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Aviation Map Viewer</title>
-    <link rel="icon" type="image/png" href="/fav/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/fav/favicon.svg" />
-    <link rel="shortcut icon" href="/fav/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/fav/apple-touch-icon.png" />
+    <title>AviS - Luchtvaartkaarten</title>
+    
+    <link rel="icon" type="image/png" href="fav/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="fav/favicon.svg" />
+    <link rel="shortcut icon" href="fav/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="fav/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="AviS" />
-    <link rel="manifest" href="/fav/site.webmanifest" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
-    <link rel="stylesheet" href="css/style.css">
-    
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="fav/site.webmanifest" />
     <meta name="theme-color" content="#007AFF">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
@@ -23,12 +22,22 @@
 
     <div class="app-ui">
         <div class="search-bar">
-            <input type="text" placeholder="Zoek vliegveld of frequentie...">
+            <input type="text" id="airport-search" placeholder="Zoek vliegveld of frequentie...">
         </div>
+
         <div class="bottom-nav">
-            <button class="nav-item active">🗺️ Kaart</button>
-            <button class="nav-item">📡 Frequenties</button>
-            <button class="nav-item">⚙️ Instellingen</button>
+            <button class="nav-item active" id="btn-map">
+                <span class="icon">🗺️</span>
+                <span class="label">Kaart</span>
+            </button>
+            <button class="nav-item" id="btn-freq">
+                <span class="icon">📡</span>
+                <span class="label">Frequenties</span>
+            </button>
+            <button class="nav-item" id="btn-settings">
+                <span class="icon">⚙️</span>
+                <span class="label">Instellingen</span>
+            </button>
         </div>
     </div>
 
