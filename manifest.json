@@ -1,21 +1,15 @@
 {
-  "short_name": "AviationMap",
-  "name": "Aviation Frequency Map",
+  "name": "AviScanner Live",
+  "short_name": "AviScanner",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#00ff00",
   "icons": [
     {
-      "src": "fav/favicon-192x192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "fav/favicon-512x512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "src": "https://cdn.icon-icons.com/icons2/1391/PNG/512/airplane_96305.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
-  ],
-  "start_url": "/index.html",
-  "background_color": "#ffffff",
-  "display": "standalone",
-  "theme_color": "#007AFF",
-  "description": "Interactieve luchtvaartkaart met frequenties."
+  ]
 }
