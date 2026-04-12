@@ -1,27 +1,46 @@
-// Kaart setup
-const map = L.map('map', { zoomControl: false }).setView([51.95, 4.43], 10);
+const map = L.map('map').setView([52.3676, 4.9041], 7); // Focus op Nederland
 
-// Basis laag
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
+// Dark-mode kaartlaag (CartoDB Dark Matter)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap'
 }).addTo(map);
 
-// OpenFlightMaps laag
-L.tileLayer('https://{s}.tile.p-p-h.org/openflightmaps/latest/topo/int/{z}/{x}/{y}.png', {
-    maxZoom: 14,
-    subdomains: ['a', 'b', 'c'],
-    attribution: '© OpenFlightMaps'
-}).addTo(map);
-
-// Voorbeeld marker
-L.marker([51.9569, 4.4372]).addTo(map)
-    .bindPopup('<b>EHRD - Rotterdam Tower</b><br>118.205 MHz');
-
-// Navigatie knoppen
-document.querySelectorAll('.nav-item').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        console.log("Navigeren naar:", this.id);
-    });
+// Icon van icon-icons.com (Vliegtuig)
+const planeIcon = L.icon({
+    iconUrl: 'https://cdn.icon-icons.com/icons2/1391/PNG/512/airplane_96305.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15]
 });
+
+let markers = {};
+
+async function updateFlights() {
+    try {
+        // We gebruiken de OpenSky Network API (Publieke data)
+        const response = await fetch('https://opensky-network.org/api/states/all?lamin=50.7&lomin=3.3&lamax=53.5&lomax=7.2');
+        const data = await response.json();
+        
+        document.getElementById('count').innerText = data.states.length;
+
+        data.states.forEach(flight => {
+            const [icao, callsign, country, lastPos, lastContact, lon, lat, alt, onGround, velocity, trueTrack] = flight;
+
+            if (lat && lon) {
+                if (markers[icao]) {
+                    markers[icao].setLatLng([lat, lon]);
+                    markers[icao].setRotationAngle(trueTrack); // Vereist extra plugin, of inline CSS
+                } else {
+                    markers[icao] = L.marker([lat, lon], { icon: planeIcon })
+                        .addTo(map)
+                        .bindPopup(`<b>Flight: ${callsign}</b><br>Alt: ${Math.round(alt)}m<br>Snelheid: ${Math.round(velocity * 3.6)} km/u`);
+                }
+            }
+        });
+    } catch (error) {
+        console.error("Data kon niet worden geladen:", error);
+    }
+}
+
+// Elke 10 seconden verversen
+setInterval(updateFlights, 10000);
+updateFlights();
