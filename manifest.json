@@ -1,11 +1,11 @@
 {
-  "name": "J.A.R.V.I.S. OSINT HUD",
+  "name": "JARVIS Tactical OSINT Engine",
   "short_name": "JARVIS OSINT",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#02060d",
-  "theme_color": "#00f0ff",
-  "orientation": "portrait-primary",
+  "background_color": "#030a16",
+  "theme_color": "#00f3ff",
+  "description": "Tactical OSINT Surveillance HUD for Aircraft and Vehicles",
   "icons": [
     {
       "src": "fav/web-app-manifest-192x192.png",
