@@ -1,5 +1,12 @@
+// Register Service Worker for PWA / JARVIS Offline Capabilities
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-    .then(() => console.log("Service Worker Geregistreerd"))
-    .catch(err => console.log("SW fout:", err));
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+            .then((registration) => {
+                console.log('J.A.R.V.I.S. Service Worker registered with scope:', registration.scope);
+            })
+            .catch((error) => {
+                console.error('Service Worker registration failed:', error);
+            });
+    });
 }
