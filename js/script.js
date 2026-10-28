@@ -10,10 +10,10 @@ const localDatabase = {
     "PH-BVA": { type: "Boeing 737-8K2", model: "B738", owner: "KLM - Royal Dutch Airlines", icao: "484123", status: "Commercieel Vliegtuig" },
     "PH-UTL": { type: "Dassault Falcon 8X", model: "Falcon 8X", owner: "Max Verstappen", icao: "4867E6", status: "VIP Active" },
     "PH-TLP": { type: "Dassault Falcon 7X", model: "Falcon 7X", owner: "Talpa / John de Mol", icao: "485171", status: "VIP Active" },
-    "PH-KFY": { type: "Diamond DA-40NG Star", model: "DA40", owner: "KLM Flight Academy", icao: "485993", status: "Training" },
+    "PH-KFY": { type: "Diamond DA-40NG Star", model: "DA40", owner: "KLM Flight Academy", icao: "485993", status: "Training Flight" },
     "PH-CJM": { type: "Cessna Citation Sovereign", model: "C680", owner: "Frits van Eerd - Jumbo", icao: "4846F0", status: "Business Jet" },
     "PH-AJX": { type: "Dassault Falcon 7X", model: "Falcon 7X", owner: "AJAX (Exxaero)", icao: "485170", status: "Business Jet" },
-    "OO-NHV": { type: "Airbus / Eurocopter Dauphin", model: "AS365", owner: "Noordzee Helikopters Vlaanderen", icao: "448A42", status: "Offshore Rescue" },
+    "OO-NHV": { type: "Airbus / Eurocopter Dauphin", model: "AS365", owner: "Noordzee Helikopters Vlaanderen", icao: "448A42", status: "Offshore Patrol" },
     "PH-IWS": { type: "Dassault Falcon 7X", model: "Falcon 7X", owner: "Martin Garrix", icao: "4851B8", status: "VIP Active" },
     "PH-BEJ": { type: "Bombardier Global 5000", model: "BD-700", owner: "Ben Mandemakers", icao: "485FD1", status: "VIP Active" },
     "N900KS": { type: "Gulfstream G650ER", model: "GV-SP", owner: "Steven Spielberg", icao: "AC701E", status: "US Private Jet" },
@@ -30,28 +30,60 @@ const localDatabase = {
     "PH-NCG": { type: "Leonardo", model: "AW189", owner: "Bristow Netherlands", icao: "48644B", status: "Search & Rescue" }
 };
 
-// DOM Elements
+// Audio Synthesizer voor Sci-Fi geluidseffecten
+function playAudioBeep(type = 'click') {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'click') {
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.04);
+        } else if (type === 'scan') {
+            osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.15);
+            gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.15);
+        }
+    } catch (e) {
+        // AudioContext uitgeschakeld door browser
+    }
+}
+
+// DOM Elementen
 const modePlaneBtn = document.getElementById('modePlane');
 const modeVehicleBtn = document.getElementById('modeVehicle');
 const searchInput = document.getElementById('searchInput');
 const searchBtn = document.getElementById('searchBtn');
+const arcReactor = document.getElementById('arcReactor');
 
-// Mode Switcher Listeners
+// Mode Switchers
 modePlaneBtn.addEventListener('click', () => setMode('plane'));
 modeVehicleBtn.addEventListener('click', () => setMode('vehicle'));
+arcReactor.addEventListener('click', () => {
+    playAudioBeep('scan');
+    speakJarvis("Arc reactor operational. Systems primed.");
+});
 
 function setMode(mode) {
+    playAudioBeep('click');
     currentMode = mode;
     if (mode === 'plane') {
         modePlaneBtn.classList.add('active');
         modeVehicleBtn.classList.remove('active');
         searchInput.placeholder = "Voer vliegtuigregistratie in (bijv. PH-UTL)...";
-        speakJarvis("Air traffic tracking mode activated.");
+        speakJarvis("Airborne telemetry scanner online.");
     } else {
         modeVehicleBtn.classList.add('active');
         modePlaneBtn.classList.remove('active');
         searchInput.placeholder = "Voer kenteken in (bijv. AB-12-CD)...";
-        speakJarvis("RDW vehicle registry mode activated.");
+        speakJarvis("RDW vehicle recon online.");
     }
 }
 
@@ -62,6 +94,7 @@ searchInput.addEventListener('keypress', (e) => {
 
 // Hoofdzoekfunctie
 async function executeSearch() {
+    playAudioBeep('scan');
     const query = searchInput.value.trim().toUpperCase();
     const resultCard = document.getElementById('resultCard');
     const errorCard = document.getElementById('errorCard');
@@ -73,7 +106,7 @@ async function executeSearch() {
     errorCard.classList.add('hidden');
     loading.classList.remove('hidden');
 
-    speakJarvis("Scanning databases.");
+    speakJarvis("Scanning active sectors.");
 
     setTimeout(async () => {
         loading.classList.add('hidden');
@@ -86,14 +119,14 @@ async function executeSearch() {
     }, 450);
 }
 
-// 1. Vliegtuig Zoeklogica
+// Vliegtuig Zoeklogica
 async function handleAircraftSearch(query) {
     let planeData = {
         type: "Luchtvaartuig",
         model: "Standaard registratie",
-        owner: "Geregistreerd / Operator onbekend",
+        owner: "Geregistreerd / Operator niet live",
         icao: "N.v.t.",
-        status: "Aan de grond / Geen live signaal"
+        status: "Aan de grond / Geen live transponder"
     };
 
     if (localDatabase[query]) {
@@ -141,7 +174,7 @@ async function displayAircraftResult(reg, data) {
     document.getElementById('label5').innerText = "Transponder Status:";
     document.getElementById('val5').innerText = data.status;
 
-    document.getElementById('jarvisLogText').innerText = `Target ${reg} gelokaliseerd in luchtruim. Transponder data geverifieerd.`;
+    document.getElementById('jarvisLogText').innerText = `Doelwit ${reg} verwerkt. Telemetrie gecorreleerd met satellietbeelden.`;
 
     // Foto ophalen via Planespotters
     const imgContainer = document.getElementById('imageContainer');
@@ -162,10 +195,10 @@ async function displayAircraftResult(reg, data) {
     }
 
     document.getElementById('resultCard').classList.remove('hidden');
-    speakJarvis(`Target ${reg} identified successfully.`);
+    speakJarvis(`Target ${reg} acquired.`);
 }
 
-// 2. Voertuig Zoeklogica (RDW)
+// Voertuig Zoeklogica (RDW)
 async function handleVehicleSearch(rawQuery) {
     const cleanQuery = rawQuery.replace(/[^A-Z0-9]/g, '');
     const errorCard = document.getElementById('errorCard');
@@ -194,22 +227,22 @@ async function handleVehicleSearch(rawQuery) {
             document.getElementById('val4').innerText = formatRDWDate(v.vervaldatum_apk) || 'Onbekend';
 
             document.getElementById('label5').innerText = "RDW Status:";
-            document.getElementById('val5').innerText = "Geregistreerd in RDW database";
+            document.getElementById('val5').innerText = "Geregistreerd in RDW databank";
 
             document.getElementById('imageContainer').classList.add('hidden');
             document.getElementById('jarvisLogText').innerText = `Kenteken ${formattedPlate} geverifieerd in nationale RDW voertuigdatabank.`;
             
             document.getElementById('resultCard').classList.remove('hidden');
-            speakJarvis(`Vehicle license plate ${formattedPlate} verified.`);
+            speakJarvis(`Vehicle ${formattedPlate} verified.`);
         } else {
             errorCard.classList.remove('hidden');
             document.getElementById('errorText').innerText = `Geen voertuig gevonden voor kenteken: ${rawQuery}`;
-            speakJarvis("No vehicle records found for this license plate.");
+            speakJarvis("No vehicle records found.");
         }
     } catch (err) {
         errorCard.classList.remove('hidden');
-        document.getElementById('errorText').innerText = "Verbindingsfout met RDW registry server.";
-        speakJarvis("Error communicating with RDW servers.");
+        document.getElementById('errorText').innerText = "Fout bij verbinden met RDW servers.";
+        speakJarvis("Connection error with database.");
     }
 }
 
@@ -224,13 +257,13 @@ function formatPlate(p) {
     return `${p.substr(0,2)}-${p.substr(2,2)}-${p.substr(4,2)}`;
 }
 
-// JARVIS Spraak synthesiseerfunctie (optioneel via browser Web Speech API)
+// JARVIS Spraakfunctie via browser Web Speech API
 function speakJarvis(text) {
     if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.rate = 1.05;
         utterance.pitch = 0.95;
-        // Probeer een Engelse stem te vinden voor de JARVIS-vibe
         const voices = window.speechSynthesis.getVoices();
         const enVoice = voices.find(v => v.lang.includes('en') && (v.name.includes('GB') || v.name.includes('UK') || v.name.includes('Male')));
         if (enVoice) utterance.voice = enVoice;
