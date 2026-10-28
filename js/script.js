@@ -4,7 +4,7 @@
 
 let currentMode = 'plane'; // 'plane' of 'vehicle'
 
-// Lokale database voor vliegtuigen (uniek en gecontroleerd)
+// Lokale database voor vliegtuigen
 const localDatabase = {
     "PH-RAC": { type: "Cessna 172 Skyhawk", model: "C172", owner: "Privé / Aeroclub", icao: "4844CD", status: "Geregistreerd / Actief" },
     "PH-BVA": { type: "Boeing 737-8K2", model: "B738", owner: "KLM - Royal Dutch Airlines", icao: "484123", status: "Commercieel Vliegtuig" },
@@ -52,7 +52,7 @@ function playAudioBeep(type = 'click') {
             osc.stop(audioCtx.currentTime + 0.15);
         }
     } catch (e) {
-        // AudioContext uitgeschakeld door browser
+        // AudioContext overgeslagen
     }
 }
 
