@@ -1,13 +1,19 @@
 {
-  "name": "AviScanner Live",
-  "short_name": "AviScanner",
-  "start_url": "index.html",
+  "name": "J.A.R.V.I.S. OSINT HUD",
+  "short_name": "JARVIS OSINT",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#1a1a1a",
-  "theme_color": "#00ff00",
+  "background_color": "#02060d",
+  "theme_color": "#00f0ff",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://cdn.icon-icons.com/icons2/1391/PNG/512/airplane_96305.png",
+      "src": "fav/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "fav/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
