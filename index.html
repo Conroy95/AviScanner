@@ -3,32 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>J.A.R.V.I.S. // OSINT Tactical Dashboard</title>
+    <title>J.A.R.V.I.S. // Tactical OSINT Interface</title>
+    
+    <!-- Favicon links -->
+    <link rel="icon" href="fav/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="fav/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- CSS stylesheet link -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Achtergrond HUD Grid & Scanlines -->
+    <!-- Sci-Fi HUD Achtergrondeffecten -->
     <div class="hud-grid"></div>
     <div class="scanlines"></div>
 
     <div class="container">
-        <!-- J.A.R.V.I.S. Header & Arc Reactor Status -->
+        <!-- Header met geanimeerde Arc Reactor -->
         <header>
             <div class="jarvis-status">
-                <div class="arc-reactor"></div>
-                <span class="system-text">JARVIS v4.9 // ONLINE</span>
+                <div class="arc-reactor" id="arcReactor"></div>
+                <span class="system-text">STARK OS // J.A.R.V.I.S. MARK-VII</span>
             </div>
             <h1>T.A.C.T.I.C.A.L <span class="neon-text">OSINT HUD</span></h1>
-            <p class="subtitle">// Global Surveillance & Registry Interface</p>
+            <p class="subtitle">// Global Surveillance & Intelligence Recon Systems</p>
         </header>
 
-        <!-- Mode Selector (Switch tussen Vliegtuigen en Auto's) -->
+        <!-- Mode Selector (Airborne vs Vehicle) -->
         <div class="mode-selector">
-            <button id="modePlane" class="mode-btn active">AIR TRAFFIC</button>
-            <button id="modeVehicle" class="mode-btn">VEHICLE RDW</button>
+            <button id="modePlane" class="mode-btn active">✈️ AIRBORNE TELEMETRY</button>
+            <button id="modeVehicle" class="mode-btn">🚗 RDW VEHICLE RECON</button>
         </div>
 
         <main>
+            <!-- Radar Display Element -->
+            <div class="radar-box">
+                <div class="radar-sweep"></div>
+                <div class="radar-crosshair"></div>
+                <div class="radar-ping" id="radarPing"></div>
+                <span class="radar-label">RADAR SCANNER // ACTIVE SWEEP</span>
+            </div>
+
             <!-- Zoekbalk -->
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="Voer registratie in (bijv. PH-UTL, AB-12-CD)..." autocomplete="off">
@@ -38,7 +53,7 @@
             <!-- Laadscherm -->
             <div id="loading" class="hidden">
                 <div class="spinner"></div>
-                <p id="loadingText">JARVIS is databanken aan het doorzoeken...</p>
+                <p id="loadingText">J.A.R.V.I.S. doorzoekt wereldwijde satelliet- en RDW databanken...</p>
             </div>
 
             <!-- Resultaten Kaart -->
@@ -48,18 +63,18 @@
                     <span id="resBadge" class="badge">--</span>
                 </div>
                 <div class="card-body">
-                    <!-- Afbeelding container (alleen voor vliegtuigen) -->
+                    <!-- Afbeelding container -->
                     <div id="imageContainer" class="image-container hidden">
                         <img id="resImage" src="" alt="Target visual" class="hidden">
                     </div>
 
-                    <!-- Dynamische Info Rijden -->
+                    <!-- Telemetrie Rijden -->
                     <div class="info-row">
-                        <span class="label" id="label1">Type:</span>
+                        <span class="label" id="label1">Type / Categorie:</span>
                         <span id="val1" class="value">--</span>
                     </div>
                     <div class="info-row">
-                        <span class="label" id="label2">Model / Uitvoering:</span>
+                        <span class="label" id="label2">Fabrikant / Uitvoering:</span>
                         <span id="val2" class="value">--</span>
                     </div>
                     <div class="info-row">
@@ -67,7 +82,7 @@
                         <span id="val3" class="value">--</span>
                     </div>
                     <div class="info-row">
-                        <span class="label" id="label4">Identificatie / Hex:</span>
+                        <span class="label" id="label4">Hex / Registratie:</span>
                         <span id="val4" class="value">--</span>
                     </div>
                     <div class="info-row">
@@ -77,22 +92,23 @@
 
                     <!-- JARVIS Diagnostisch Log -->
                     <div class="jarvis-log">
-                        <span class="log-prefix">JARVIS:</span> <span id="jarvisLogText">Analytica voltooid. Geen afwijkingen gedetecteerd.</span>
+                        <span class="log-prefix">J.A.R.V.I.S.:</span> <span id="jarvisLogText">Systeemanalyse voltooid. Geen afwijkingen gedetecteerd.</span>
                     </div>
                 </div>
             </div>
 
             <!-- Foutmelding Kaart -->
             <div id="errorCard" class="card error hidden">
-                <p id="errorText">Geen gegevens gevonden in actieve sectoren.</p>
+                <p id="errorText">Geen doelwit gevonden in actieve frequenties.</p>
             </div>
         </main>
 
         <footer>
-            <p>&copy; 2026 STARK INDUSTRIES // SECURE ENCRYPTION ACTIVE</p>
+            <p>&copy; 2026 STARK INDUSTRIES // SECURE QUANTUM ENCRYPTION ACTIVE</p>
         </footer>
     </div>
 
+    <!-- JavaScript script link -->
     <script src="js/script.js"></script>
 </body>
 </html>
