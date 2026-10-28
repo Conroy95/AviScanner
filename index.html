@@ -2,24 +2,97 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AviScanner - Live Flight Tracker</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>J.A.R.V.I.S. // OSINT Tactical Dashboard</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="shortcut icon" href="fav/favicon.ico" type="image/x-icon">
 </head>
 <body>
+    <!-- Achtergrond HUD Grid & Scanlines -->
+    <div class="hud-grid"></div>
+    <div class="scanlines"></div>
 
-    <div id="map"></div>
+    <div class="container">
+        <!-- J.A.R.V.I.S. Header & Arc Reactor Status -->
+        <header>
+            <div class="jarvis-status">
+                <div class="arc-reactor"></div>
+                <span class="system-text">JARVIS v4.9 // ONLINE</span>
+            </div>
+            <h1>T.A.C.T.I.C.A.L <span class="neon-text">OSINT HUD</span></h1>
+            <p class="subtitle">// Global Surveillance & Registry Interface</p>
+        </header>
 
-    <div class="ui-overlay">
-        <h1>AviScanner</h1>
-        <div id="stats">Vliegtuigen in beeld: <span id="count">0</span></div>
+        <!-- Mode Selector (Switch tussen Vliegtuigen en Auto's) -->
+        <div class="mode-selector">
+            <button id="modePlane" class="mode-btn active">AIR TRAFFIC</button>
+            <button id="modeVehicle" class="mode-btn">VEHICLE RDW</button>
+        </div>
+
+        <main>
+            <!-- Zoekbalk -->
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Voer registratie in (bijv. PH-UTL, AB-12-CD)..." autocomplete="off">
+                <button id="searchBtn">EXECUTE</button>
+            </div>
+
+            <!-- Laadscherm -->
+            <div id="loading" class="hidden">
+                <div class="spinner"></div>
+                <p id="loadingText">JARVIS is databanken aan het doorzoeken...</p>
+            </div>
+
+            <!-- Resultaten Kaart -->
+            <div id="resultCard" class="card hidden">
+                <div class="card-header">
+                    <h2 id="cardTitle">TARGET IDENTIFIED</h2>
+                    <span id="resBadge" class="badge">--</span>
+                </div>
+                <div class="card-body">
+                    <!-- Afbeelding container (alleen voor vliegtuigen) -->
+                    <div id="imageContainer" class="image-container hidden">
+                        <img id="resImage" src="" alt="Target visual" class="hidden">
+                    </div>
+
+                    <!-- Dynamische Info Rijden -->
+                    <div class="info-row">
+                        <span class="label" id="label1">Type:</span>
+                        <span id="val1" class="value">--</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label" id="label2">Model / Uitvoering:</span>
+                        <span id="val2" class="value">--</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label" id="label3">Eigenaar / Operator:</span>
+                        <span id="val3" class="value">--</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label" id="label4">Identificatie / Hex:</span>
+                        <span id="val4" class="value">--</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label" id="label5">Status & Telemetrie:</span>
+                        <span id="val5" class="value">--</span>
+                    </div>
+
+                    <!-- JARVIS Diagnostisch Log -->
+                    <div class="jarvis-log">
+                        <span class="log-prefix">JARVIS:</span> <span id="jarvisLogText">Analytica voltooid. Geen afwijkingen gedetecteerd.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Foutmelding Kaart -->
+            <div id="errorCard" class="card error hidden">
+                <p id="errorText">Geen gegevens gevonden in actieve sectoren.</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 STARK INDUSTRIES // SECURE ENCRYPTION ACTIVE</p>
+        </footer>
     </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="js/script.js"></script>
-    <script src="js/app.js"></script>
 </body>
 </html>
